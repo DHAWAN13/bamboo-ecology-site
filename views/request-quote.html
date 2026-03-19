@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TechBamboo — Project Quote Request</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<nav class="nav">
+    <span class="logo">TechBamboo</span>
+    <div>
+        <a href="/">Home</a>
+        <a href="/cs-ecology">Philosophy</a>
+        <a href="/bamboo">Bamboo</a>
+        <a href="/architecture">Architecture</a>
+        <a href="/gallery">Projects</a>
+        <a href="/request-quote" class="active">Request Quote</a>
+    </div>
+</nav>
+
+<section class="section-light reveal">
+<div class="text-container">
+
+<h1>Bamboo Project Quote Request</h1>
+
+<form
+    action="/submit-request"
+    method="POST"
+    enctype="multipart/form-data">
+
+<label>
+    Full Name
+    <input type="text" name="name" placeholder="Enter your full name" required>
+</label>
+
+<label>
+    Email
+    <input type="text" name="email" placeholder="example@gmail.com" required>
+</label>
+
+<label>
+    Phone
+    <input type="text" name="phone" placeholder="9876543210" required>
+</label>
+
+<label>
+    User Type
+    <select name="userType" required>
+        <option value="">Select</option>
+        <option value="Architect">I'm an Architect</option>
+        <option value="Consumer">I'm the Customer</option>
+    </select>
+</label>
+
+<label>
+    Project Type
+    <select name="projectType" required>
+        <option value="">Select</option>
+        <option value="Residential">Residential</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Community">Community</option>
+        <option value="Others">Something Else</option>
+    </select>
+</label>
+
+<label>
+    Structural Notes
+    <textarea name="structuralNotes" placeholder="Enter details about structural design, materials, and joinery..."></textarea>
+</label>
+
+<label>
+    Sustainability Goals
+    <textarea name="sustainabilityGoals" placeholder="Describe eco-friendly practices, renewable materials, and long-term sustainability targets..."></textarea>
+</label>
+
+<label>
+    Reference Image (Optional)
+    <input type="file" name="referenceImage" accept="image/*">
+</label>
+
+<button type="submit">Submit Request</button>
+
+</form>
+
+</div>
+</section>
+
+<footer class="site-footer">
+    <p>© 2025 • Systems, Structures & Sustainability</p>
+</footer>
+
+<script src="/js/reveal.js"></script>
+</body>
+</html>
