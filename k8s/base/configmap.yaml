@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: techbamboo-config
+  namespace: techbamboo
+
+data:
+ MONGO_URI: mongodb://admin:strongpassword123@mongo-service:27017/techbamboo?authSource=admin
+ PORT: "3000"

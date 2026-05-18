@@ -1,40 +1,61 @@
-name: CI Pipeline
+name: DevSecOps Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
+
+  build-test-scan-deploy:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
+
+    - name: Checkout Repository
       uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
-        cache: 'npm'
+        node-version: 18
+        cache: npm
 
-    - name: Check Node version
+    - name: Check Node Version
       run: node -v
 
     - name: Install Dependencies
       run: npm ci
 
-    - name: Run Tests
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Run Prettier Check
+      run: npx prettier . --check
+
+    - name: Run Unit Tests
       run: npm test
 
     - name: Build Docker Image
-      run: docker build -t techbamboo-app .
+      run: docker build -t techbamboo-app:${{ github.sha }} .
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install trivy -y
+
+    - name: Run Trivy Security Scan
+      run: trivy image techbamboo-app:${{ github.sha }}
 
     - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Tag Docker Image
-      run: docker tag techbamboo-app ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:latest
+      run: docker tag techbamboo-app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}
 
     - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}

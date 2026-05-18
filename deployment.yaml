@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techbamboo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techbamboo
+  template:
+    metadata:
+      labels:
+        app: techbamboo
+    spec:
+      containers:
+      - name: techbamboo-container
+        image: dhawan13/techbamboo-app:latest
+        ports:
+        - containerPort: 3000
