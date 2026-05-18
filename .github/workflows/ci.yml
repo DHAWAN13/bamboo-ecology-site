@@ -18,9 +18,7 @@ on:
 # ==========================================
 
 jobs:
-
   build-test-scan-deploy:
-
     # ======================================
     # RUN PIPELINE ON UBUNTU RUNNER
     # ======================================
@@ -32,94 +30,93 @@ jobs:
     # ======================================
 
     steps:
+      # ======================================
+      # STEP 1 — CLONE REPOSITORY
+      # ======================================
 
-    # ======================================
-    # STEP 1 — CLONE REPOSITORY
-    # ======================================
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      # ======================================
+      # STEP 2 — SETUP NODE.JS
+      # ======================================
 
-    # ======================================
-    # STEP 2 — SETUP NODE.JS
-    # ======================================
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-        cache: npm
+      # ======================================
+      # STEP 3 — VERIFY NODE VERSION
+      # ======================================
 
-    # ======================================
-    # STEP 3 — VERIFY NODE VERSION
-    # ======================================
+      - name: Check Node Version
+        run: node -v
 
-    - name: Check Node Version
-      run: node -v
+      # ======================================
+      # STEP 4 — INSTALL PROJECT DEPENDENCIES
+      # ======================================
 
-    # ======================================
-    # STEP 4 — INSTALL PROJECT DEPENDENCIES
-    # ======================================
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Install Dependencies
-      run: npm ci
+      # ======================================
+      # STEP 5 — RUN ESLINT
+      # CODE QUALITY CHECK
+      # ======================================
 
-    # ======================================
-    # STEP 5 — RUN ESLINT
-    # CODE QUALITY CHECK
-    # ======================================
+      - name: Run ESLint
+        run: npm run lint
 
-    - name: Run ESLint
-      run: npm run lint
+      # ======================================
+      # STEP 6 — RUN PRETTIER
+      # FORMAT CONSISTENCY CHECK
+      # ======================================
 
-    # ======================================
-    # STEP 6 — RUN PRETTIER
-    # FORMAT CONSISTENCY CHECK
-    # ======================================
+      - name: Run Prettier Check
+        run: npx prettier . --check
 
-    - name: Run Prettier Check
-      run: npx prettier . --check
+      # ======================================
+      # STEP 7 — RUN UNIT TESTS
+      # ======================================
 
-    # ======================================
-    # STEP 7 — RUN UNIT TESTS
-    # ======================================
+      - name: Run Unit Tests
+        run: npm test
 
-    - name: Run Unit Tests
-      run: npm test
+      # ======================================
+      # STEP 8 — BUILD DOCKER IMAGE
+      # ======================================
 
-    # ======================================
-    # STEP 8 — BUILD DOCKER IMAGE
-    # ======================================
+      - name: Build Docker Image
+        run: docker build -t techbamboo-app:${{ github.sha }} .
 
-    - name: Build Docker Image
-      run: docker build -t techbamboo-app:${{ github.sha }} .
+      # ======================================
+      # STEP 9 — RUN TRIVY SECURITY SCAN
+      # ======================================
 
-    # ======================================
-    # STEP 9 — RUN TRIVY SECURITY SCAN
-    # ======================================
+      - name: Run Trivy Security Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: techbamboo-app:${{ github.sha }}
 
-    - name: Run Trivy Security Scan
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: techbamboo-app:${{ github.sha }}
+      # ======================================
+      # STEP 10 — LOGIN TO DOCKER HUB
+      # ======================================
 
-    # ======================================
-    # STEP 10 — LOGIN TO DOCKER HUB
-    # ======================================
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      # ======================================
+      # STEP 11 — TAG DOCKER IMAGE
+      # ======================================
 
-    # ======================================
-    # STEP 11 — TAG DOCKER IMAGE
-    # ======================================
+      - name: Tag Docker Image
+        run: docker tag techbamboo-app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}
 
-    - name: Tag Docker Image
-      run: docker tag techbamboo-app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}
+      # ======================================
+      # STEP 12 — PUSH IMAGE TO DOCKER HUB
+      # ======================================
 
-    # ======================================
-    # STEP 12 — PUSH IMAGE TO DOCKER HUB
-    # ======================================
-
-    - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/techbamboo-app:${{ github.sha }}

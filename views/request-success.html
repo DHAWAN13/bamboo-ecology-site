@@ -1,77 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>TechBamboo — Request Submitted</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
 
-<body>
-
-<nav class="nav">
-    <span class="logo">TechBamboo</span>
-    <div>
+  <body>
+    <nav class="nav">
+      <span class="logo">TechBamboo</span>
+      <div>
         <a href="/">Home</a>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<!-- ================================
+    <!-- ================================
      SUCCESS CONTENT
 ================================ -->
 
-<section class="section-light reveal">
-
-    <div class="text-container">
-
+    <section class="section-light reveal">
+      <div class="text-container">
         <h1>Project Request Received</h1>
 
         <p>
-            Thank you for submitting your requirements.<br>
-    They are now safe in our Bamboo Database.
+          Thank you for submitting your requirements.<br />
+          They are now safe in our Bamboo Database.
+        </p>
+
+        <p>Please keep your Bamboo ID handy for future communication.</p>
+
+        <p style="font-family: monospace; letter-spacing: 0.5px">
+          <strong>
+            Bamboo_ID:
+            <span id="request-id"></span>
+          </strong>
         </p>
 
         <p>
-            Please keep your Bamboo ID handy for future communication.
+          <a href="/" style="text-decoration: underline"> Return to Home </a>
         </p>
+      </div>
+    </section>
 
-        <p style="font-family: monospace; letter-spacing: 0.5px;">
-            <strong>
-    Bamboo_ID:     
-    <span id="request-id"></span> 
-    </strong>
-        </p>
-
-        <p>
-            <a href="/" style="text-decoration: underline;">
-                Return to Home
-            </a>
-        </p>
-
-    </div>
-
-</section>
-
-<!-- ================================
+    <!-- ================================
      FOOTER
 ================================ -->
 
-<footer class="site-footer">
-    <p>© 2025 • Systems, Structures & Sustainability</p>
-</footer>
+    <footer class="site-footer">
+      <p>© 2025 • Systems, Structures & Sustainability</p>
+    </footer>
 
-<!-- ================================
+    <!-- ================================
      SCRIPTS
 ================================ -->
 
-<script src="/js/reveal.js"></script>
+    <script src="/js/reveal.js"></script>
 
-<script>
-    // Extract MongoDB ObjectId from URL
-    const parts = window.location.pathname.split("/");
-    const requestId = parts[parts.length - 1];
-    document.getElementById("request-id").textContent = requestId;
-</script>
-
-
-</body>
+    <script>
+      // Extract MongoDB ObjectId from URL
+      const parts = window.location.pathname.split("/");
+      const requestId = parts[parts.length - 1];
+      document.getElementById("request-id").textContent = requestId;
+    </script>
+  </body>
 </html>

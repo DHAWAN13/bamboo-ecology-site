@@ -3,77 +3,75 @@
 ===================================== */
 const mongoose = require("mongoose");
 
-const projectRequestSchema = new mongoose.Schema({
-
+const projectRequestSchema = new mongoose.Schema(
+  {
     name: {
-    	type: String,
-    	required: true
+      type: String,
+      required: true,
     },
     email: {
-    	type: String,
-   	required: true
+      type: String,
+      required: true,
     },
     phone: {
-   	type: String,
-    	required: true
+      type: String,
+      required: true,
     },
     userType: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     projectType: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     bambooSpecies: {
-        type: String
+      type: String,
     },
 
     preservationMethod: {
-        type: String
+      type: String,
     },
 
     structuralNotes: {
-        type: String
+      type: String,
     },
 
     protectionNotes: {
-        type: String
+      type: String,
     },
 
     sustainabilityGoals: {
-        type: String
+      type: String,
     },
 
     budgetRange: {
-        type: String
+      type: String,
     },
 
     timeline: {
-        type: String
+      type: String,
     },
 
     /* Image path will be added later using Multer */
     referenceImage: {
-        type: String
+      type: String,
     },
 
     /* Admin workflow fields */
     status: {
-        type: String,
-        default: "Pending"
+      type: String,
+      default: "Pending",
     },
 
     adminNotes: {
-        type: String
-    }
-
-}, {
-    timestamps: true   // createdAt & updatedAt
-});
-
-module.exports = mongoose.model(
-    "ProjectRequest",
-    projectRequestSchema
+      type: String,
+    },
+  },
+  {
+    timestamps: true, // createdAt & updatedAt
+  },
 );
+
+module.exports = mongoose.model("ProjectRequest", projectRequestSchema);

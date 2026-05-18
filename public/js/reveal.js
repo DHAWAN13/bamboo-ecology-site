@@ -5,15 +5,15 @@
 const reveals = document.querySelectorAll(".reveal");
 
 const revealOnScroll = () => {
-    const windowHeight = window.innerHeight;
+  const windowHeight = window.innerHeight;
 
-    reveals.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
+  reveals.forEach((section) => {
+    const sectionTop = section.getBoundingClientRect().top;
 
-        if (sectionTop < windowHeight - 100) {
-            section.classList.add("visible");
-        }
-    });
+    if (sectionTop < windowHeight - 100) {
+      section.classList.add("visible");
+    }
+  });
 };
 
 window.addEventListener("scroll", revealOnScroll);
