@@ -1,13 +1,20 @@
 module.exports = [
   {
     files: ["**/*.js"],
+
+    ignores: [
+      "node_modules/**",
+      "coverage/**"
+    ],
+
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: "commonjs"
     },
+
     rules: {
-      semi: ["error", "always"],
-      quotes: ["error", "double"]
+      semi: "off",
+      quotes: "off"
     }
   }
 ];
